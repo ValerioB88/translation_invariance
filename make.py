@@ -12,8 +12,8 @@ from argparser import args
 train_examples_per_shape = args.n
 test_examples_per_shape = int(max(1, train_examples_per_shape / 10))
 
-image_w = 400
-image_h = 400
+image_w = 224  # 400
+image_h = 224  # 400
 shape_w = 50
 shape_h = 50
 
