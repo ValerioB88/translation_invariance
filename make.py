@@ -12,8 +12,8 @@ from argparser import args
 train_examples_per_shape = args.n
 test_examples_per_shape = int(max(1, train_examples_per_shape / 10))
 
-image_w = 224  # 400
-image_h = 224  # 400
+image_w = args.s  # 224  # 400
+image_h = args.s  # 224 # 400
 shape_w = 50
 shape_h = 50
 
@@ -79,41 +79,43 @@ shapes_dir = "./stimuli/"
 print("Generating train set (n = {}) ...".format(train_examples_per_shape), end='')
 sys.stdout.flush()
 for i in range(train_examples_per_shape):
-    
+
+    output_path = "./data/train/{}.{}.{}.{}".format(args.s, args.e, args.m, args.noise)
     if (args.m == 1):
         for shape_no in range(1, 13):
-            gen_stimulus(shape_no, "center", "./data/train/{}.{}.{}".format(args.e, args.m, args.noise), category = 1)
-            gen_stimulus(shape_no + 12, "center", "./data/train/{}.{}.{}".format(args.e, args.m, args.noise), category = 2)
+            gen_stimulus(shape_no, "center", output_path, category = 1)
+            gen_stimulus(shape_no + 12, "center", output_path, category = 2)
             
     if (args.m == 2):
         for shape_no in range(1, 7):
-            gen_stimulus(shape_no, "left", "./data/train/{}.{}.{}".format(args.e, args.m, args.noise), category = 1)
+            gen_stimulus(shape_no, "left", output_path, category = 1)
         for shape_no in range(7, 13):
-            gen_stimulus(shape_no, "right", "./data/train/{}.{}.{}".format(args.e, args.m, args.noise), category = 1)
+            gen_stimulus(shape_no, "right", output_path, category = 1)
         for shape_no in range(13, 19):
-            gen_stimulus(shape_no, "left", "./data/train/{}.{}.{}".format(args.e, args.m, args.noise), category = 2)
+            gen_stimulus(shape_no, "left", output_path, category = 2)
         for shape_no in range(19, 25):
-            gen_stimulus(shape_no, "right", "./data/train/{}.{}.{}".format(args.e, args.m, args.noise), category = 2)
+            gen_stimulus(shape_no, "right", output_path, category = 2)
 
 print("Done.")
 
 print("Generating test set (n = {}) ...".format(test_examples_per_shape), end='')
 sys.stdout.flush()
 for _ in range(test_examples_per_shape):
+    output_path = "./data/test/{}.{}.{}.{}".format(args.s, args.e, args.m, args.noise)
     if (args.m == 1):
         for shape_no in range(1, 13):
-            gen_stimulus(shape_no, "right", "./data/test/{}.{}.{}".format(args.e, args.m, args.noise), category = 1)
-            gen_stimulus(shape_no + 12, "right", "./data/test/{}.{}.{}".format(args.e, args.m, args.noise), category = 2)
+            gen_stimulus(shape_no, "right", output_path, category = 1)
+            gen_stimulus(shape_no + 12, "right", output_path, category = 2)
 
             
     if (args.m == 2):
         for shape_no in range(1, 7):
-            gen_stimulus(shape_no, "right", "./data/test/{}.{}.{}".format(args.e, args.m, args.noise), category = 1)
+            gen_stimulus(shape_no, "right", output_path, category = 1)
         for shape_no in range(7, 13):
-            gen_stimulus(shape_no, "left", "./data/test/{}.{}.{}".format(args.e, args.m, args.noise), category = 1)
+            gen_stimulus(shape_no, "left", output_path, category = 1)
         for shape_no in range(13, 19):
-            gen_stimulus(shape_no, "right", "./data/test/{}.{}.{}".format(args.e, args.m, args.noise), category = 2)
+            gen_stimulus(shape_no, "right", output_path, category = 2)
         for shape_no in range(19, 25):
-            gen_stimulus(shape_no, "left", "./data/test/{}.{}.{}".format(args.e, args.m, args.noise), category = 2)
+            gen_stimulus(shape_no, "left", output_path, category = 2)
             
 print("Done")
