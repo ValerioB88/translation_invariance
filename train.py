@@ -1,16 +1,14 @@
-from keras.applications.vgg16 import VGG16
-from keras.preprocessing import image
-from keras.applications.vgg16 import preprocess_input
-from keras.utils import Sequence
-from keras.optimizers import Adam, RMSprop
-from keras.initializers import RandomNormal
-from keras.models import Model
-from keras.layers import Dense, GlobalAveragePooling2D, Flatten, Dropout, MaxPooling2D, AveragePooling2D, GlobalMaxPooling2D
-from keras.constraints import maxnorm
-from keras import backend as K
-from keras import metrics
-from keras.preprocessing.image import ImageDataGenerator
-from keras.callbacks import EarlyStopping
+from tensorflow.keras.applications.vgg16 import VGG16
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.vgg16 import preprocess_input
+from tensorflow.keras.utils import Sequence
+from tensorflow.keras.optimizers import Adam, RMSprop
+from tensorflow.keras.initializers import RandomNormal
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Flatten, Dropout, MaxPooling2D, AveragePooling2D, GlobalMaxPooling2D
+
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.callbacks import EarlyStopping
 from os import listdir
 from os.path import isfile, isdir, join
 import numpy as np
@@ -91,15 +89,16 @@ img_gen = ImageDataGenerator(
         preprocessing_function=vgg16_preprocess,            
     )
 
+target_size = (args.s,) * 2
 g = img_gen.flow_from_directory(
-        'data/train/{}.{}.{}'.format(args.e, args.m, args.noise),
-        target_size=(400, 400),
+        'data/train/{}.{}.{}.{}'.format(args.s, args.e, args.m, args.noise),
+        target_size=target_size,
         batch_size=batch_size,
         class_mode='categorical')
 
 g_test2 = img_gen.flow_from_directory(
-            'data/test/{}.{}.{}'.format(args.e, args.m, args.noise),
-            target_size=(400, 400),
+            'data/test/{}.{}.{}.{}'.format(args.s, args.e, args.m, args.noise),
+            target_size=target_size,
             batch_size=batch_size,
             class_mode='categorical')
     
@@ -109,7 +108,7 @@ g_test2 = img_gen.flow_from_directory(
 base_model = VGG16(
         weights=('imagenet' if args.pretrained else None), 
         include_top=False, 
-        input_shape = (400, 400, 3)
+        input_shape = (*target_size, 3)
     )
 #print(base_model.summary())
 x = base_model.output
