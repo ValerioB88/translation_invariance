@@ -125,11 +125,11 @@ else:
     pass
 
 
-if args.t == 0:
+if args.t == 0:  # shallow FC
     predictions = Dense(2, activation='softmax', name='predictions')(x)
-if args.t == 1:
+if args.t == 1:  # normal FC, all pre-trained
     predictions = Dense(2, activation='softmax', name='predictions')(base_model.layers[-2].output)
-if args.t == 2:
+if args.t == 2:  # normal FC, the FC is not pre-trained
     x = Dense(4096, activation='relu', name='fc1')(x)
     x = Dense(4096, activation='relu', name='fc2')(x)
     predictions = Dense(2, activation='softmax', name='predictions')(x)
@@ -137,7 +137,7 @@ if args.t == 2:
 model = Model(inputs=base_model.input, outputs=predictions)
 
 if args.pretrained:
-    for layer in base_model.layers:
+    for layer in base_model.layers[0:19]:  # vgg16 has 19 layers of convolutions
         layer.trainable = False
     lr = 0.0001
 else:
