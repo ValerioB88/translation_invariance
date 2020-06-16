@@ -141,9 +141,9 @@ model.compile(
 #print("Init\ttrain acc:{:.3f}({:.3f})\ttest 2 acc:{:.3f}({:.3f})".format(train_acc, train_act, test2_acc, test2_act))                                
       
 #for i in range(100):        
-model.fit_generator(
+model.fit(
         g, 
-        steps_per_epoch = 24 * 100,# if args.noise > 0 else 24 * 10, 
+        steps_per_epoch = (24 * 100)/batch_size,# if args.noise > 0 else 24 * 10,
         epochs = 20, 
         verbose = 0, 
         validation_data = g_test2, 
