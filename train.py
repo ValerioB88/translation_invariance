@@ -130,7 +130,10 @@ if args.pretrained:
 else:
     lr = 0.00001
 #print(model.summary())
+for layer in model.layers:
+    print(layer, layer.trainable)
 
+print(model.summary())
 model.compile(
         optimizer=Adam(lr=lr),
         loss='categorical_crossentropy', 
