@@ -9,4 +9,5 @@ parser.add_argument('-noise', type=int, help='noise (number of pixels)', default
 parser.add_argument('-n', type=int, help='number of examples in training set', default=1000)
 parser.add_argument('-pretrained', type=int, help='use pretrained weights', default=1)
 parser.add_argument('-s', type=int, help='specify canvas size (default=400)', default=400)
+parser.add_argument('-t', type=int, help='network type - 0: shallow net, 1: deep FC net pretrained [GAP DOESN''T WORK IN THIS CASE, 2: deep FC net non-pretrained', default=0)
 args = parser.parse_args()
