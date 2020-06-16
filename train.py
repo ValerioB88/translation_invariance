@@ -17,7 +17,8 @@ import os
 
 from argparser import args
 
-batch_size = 1 if args.noise > 0 else 1
+# batch_size = 1 if args.noise > 0 else 1
+batch_size = 32 
 
 class TranslInvStimuli(Sequence):
 
@@ -131,7 +132,7 @@ else:
 #print(model.summary())
 
 model.compile(
-        optimizer=RMSprop(lr=lr), 
+        optimizer=Adam(lr=lr),
         loss='categorical_crossentropy', 
         metrics=["acc"])
 
