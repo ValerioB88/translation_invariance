@@ -108,7 +108,7 @@ g_test2 = img_gen.flow_from_directory(
 
 base_model = VGG16(
         weights=('imagenet' if args.pretrained else None), 
-        include_top=False,
+        include_top=True,
         input_shape = (*target_size, 3)
     )
 #print(base_model.summary())
@@ -117,12 +117,14 @@ x = base_model.output
 if args.gap > 0:
     x = GlobalAveragePooling2D()(x)
 else:
-    x = Flatten()(x)
+    # x = Flatten()(x)
+    pass
 
-x = Dense(4096, activation='relu', name='fc1')(x)
-x = Dense(4096, activation='relu', name='fc2')(x)
-predictions = Dense(2, activation='softmax', name='predictions')(x)
+# x = Dense(4096, activation='relu', name='fc1')(x)
+# x = Dense(4096, activation='relu', name='fc2')(x)
+# predictions = Dense(2, activation='softmax', name='predictions')(x)
 
+predictions = Dense(8, activation='softmax', name='predictions')(base_model.layers[-2].output)
 model = Model(inputs=base_model.input, outputs=predictions)
 
 if args.pretrained:
