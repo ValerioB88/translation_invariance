@@ -108,8 +108,8 @@ g_test2 = img_gen.flow_from_directory(
 
 base_model = VGG16(
         weights=('imagenet' if args.pretrained else None), 
-        include_top=True,
-        input_shape = (*target_size, 3)
+        include_top=False,
+        input_shape=(*target_size, 3)
     )
 #print(base_model.summary())
 x = base_model.output
@@ -117,19 +117,19 @@ x = base_model.output
 if args.gap > 0:
     x = GlobalAveragePooling2D()(x)
 else:
-    # x = Flatten()(x)
-    pass
+    x = Flatten()(x)
+    # pass
 
-# x = Dense(4096, activation='relu', name='fc1')(x)
-# x = Dense(4096, activation='relu', name='fc2')(x)
-# predictions = Dense(2, activation='softmax', name='predictions')(x)
+x = Dense(4096, activation='relu', name='fc1')(x)
+x = Dense(4096, activation='relu', name='fc2')(x)
+predictions = Dense(2, activation='softmax', name='predictions')(x)
 
-predictions = Dense(8, activation='softmax', name='predictions')(base_model.layers[-2].output)
+# predictions = Dense(2, activation='softmax', name='predictions')(base_model.layers[-2].output)
 model = Model(inputs=base_model.input, outputs=predictions)
 
 if args.pretrained:
-    for layer in base_model.layers:
-        layer.trainable = False
+    # for layer in base_model.layers:
+    #     layer.trainable = False
     lr = 0.0001
 else:
     lr = 0.00001
@@ -157,6 +157,7 @@ model.fit(
         validation_steps = 100,
         callbacks = [EarlyStopping(monitor="acc", min_delta = 0.05, patience = 1, verbose=True)]
         )
+print('TESTING!')
 train_acc, train_act = test_model(model, g, batch_n=240)        
 test2_acc, test2_act = test_model(model, g_test2, batch_n=240)    
 print("{}\t{}\t{}\t{}".format(train_acc, train_act, test2_acc, test2_act))                                
