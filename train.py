@@ -108,7 +108,7 @@ g_test2 = img_gen.flow_from_directory(
 
 base_model = VGG16(
         weights=('imagenet' if args.pretrained else None), 
-        include_top=False,
+        include_top=True,
         input_shape=(*target_size, 3)
     )
 #print(base_model.summary())
@@ -118,7 +118,7 @@ if args.gap > 0:
     x = GlobalAveragePooling2D()(x)
 else:
     x = Flatten()(x)
-    # pass
+    pass
 
 x = Dense(4096, activation='relu', name='fc1')(x)
 x = Dense(4096, activation='relu', name='fc2')(x)
@@ -152,11 +152,11 @@ steps_per_epoch = g.n // batch_size
 steps_per_epoch_valid = g_test2.n // batch_size
 model.fit(
         g, 
-        steps_per_epoch=steps_per_epoch,  # if args.noise > 0 else 24 * 10,
+        steps_per_epoch=24 * 100 // batch_size,  # if args.noise > 0 else 24 * 10,
         epochs=20,
-        verbose=0,
+        verbose=1,
         validation_data=g_test2,
-        validation_steps=steps_per_epoch_valid,
+        validation_steps=100,
         callbacks=[EarlyStopping(monitor="acc", min_delta = 0.05, patience = 1, verbose=True)]
         )
 print('TESTING!')
