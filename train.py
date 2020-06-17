@@ -137,14 +137,19 @@ model.compile(
 
 #train_acc, train_act = test_model(model, g, batch_n=5)        
 #test2_acc, test2_act = test_model(model, g_test2)    
-#print("Init\ttrain acc:{:.3f}({:.3f})\ttest 2 acc:{:.3f}({:.3f})".format(train_acc, train_act, test2_acc, test2_act))                                
+#print("Init\ttrain acc:{:.3f}({:.3f})\ttest 2 acc:{:.3f}({:.3f})".format(train_acc, train_act, test2_acc, test2_act))
+
+for layer in model.layers:
+    print(layer, layer.trainable)
+
+print(model.summary())
       
 #for i in range(100):        
 model.fit_generator(
         g, 
         steps_per_epoch = 24 * 100,# if args.noise > 0 else 24 * 10, 
         epochs = 20, 
-        verbose = 0, 
+        verbose = 1,
         validation_data = g_test2, 
         validation_steps = 100,
         callbacks = [EarlyStopping(monitor="acc", min_delta = 0.05, patience = 1, verbose=True)]
