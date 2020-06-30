@@ -2,7 +2,7 @@ from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.vgg16 import preprocess_input
 from tensorflow.keras.utils import Sequence
-from tensorflow.keras.optimizers import Adam, RMSprop
+from tensorflow.keras.optimizers import Adam, RMSprop, SGD
 from tensorflow.keras.initializers import RandomNormal
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Flatten, Dropout, MaxPooling2D, AveragePooling2D, GlobalMaxPooling2D
@@ -148,7 +148,7 @@ for layer in model.layers:
 
 print(model.summary())
 model.compile(
-        optimizer=Adam(lr=lr),
+        optimizer=SGD(lr=0.001),
         loss='categorical_crossentropy', 
         metrics=["acc"])
 
